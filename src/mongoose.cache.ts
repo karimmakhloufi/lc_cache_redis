@@ -19,35 +19,38 @@ export default async function applyMongooseCache() {
 
   const exec = mongoose.Query.prototype.exec;
 
-  mongoose.Query.prototype.exec = async function () {
-    console.log("query exec");
-    const key = JSON.stringify({
-      ...this.getQuery(),
-      collection: this.mongooseCollection.name,
-      op: this.op,
-      options: this.options,
-    });
+  let useCache = true;
+  if (useCache) {
+    mongoose.Query.prototype.exec = async function () {
+      console.log("query exec");
+      const key = JSON.stringify({
+        ...this.getQuery(),
+        collection: this.mongooseCollection.name,
+        op: this.op,
+        options: this.options,
+      });
 
-    let cacheValue;
+      let cacheValue;
 
-    try {
-      cacheValue = await client.get(key);
-    } catch (err) {
-      console.log("error fetching redis key");
-    }
+      try {
+        cacheValue = await client.get(key);
+      } catch (err) {
+        console.log("error fetching redis key");
+      }
 
-    if (cacheValue) {
-      console.log("from cache");
-      return JSON.parse(cacheValue);
-    } else {
-      console.log("db query");
-    }
+      if (cacheValue) {
+        console.log("from cache");
+        return JSON.parse(cacheValue);
+      } else {
+        console.log("db query");
+      }
 
-    const result = await exec.apply(this, arguments);
+      const result = await exec.apply(this, arguments);
 
-    if (result) {
-      await client.set(key, JSON.stringify(result));
-    }
-    return result;
-  };
+      if (result) {
+        await client.set(key, JSON.stringify(result));
+      }
+      return result;
+    };
+  }
 }
