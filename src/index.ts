@@ -14,12 +14,20 @@ const typeDefs = gql`
   type Query {
     books: [Book]
   }
+  type Mutation {
+    addBook(title: String, author: String): Book
+  }
 `;
 
 const resolvers = {
   Query: {
     books: async () => {
       return await Book.find();
+    },
+  },
+  Mutation: {
+    addBook: async (_: undefined, args: { title: String; author: String }) => {
+      return await Book.create(args);
     },
   },
 };
