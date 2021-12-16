@@ -1,5 +1,5 @@
 services:
-  front:
+  back:
     build: .
     volumes:
       - ./src:/app/src

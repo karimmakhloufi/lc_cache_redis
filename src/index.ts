@@ -1,7 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 import applyMongooseCache from "./mongoose.cache";
 import Book from "./bookModel";
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 applyMongooseCache();
 
