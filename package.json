@@ -1,0 +1,19 @@
+{
+  "name": "lc_cache",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "graphql": "^15.8.0",
+    "mongoose": "^6.1.2",
+    "redis": "^4.0.1",
+    "ts-node-dev": "^1.1.8"
+  }
+}
